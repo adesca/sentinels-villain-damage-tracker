@@ -1,35 +1,41 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {AppComponent} from './app.component';
+import {DamageButtonGroupComponent} from 'src/app/damage-button-group/damage-button-group.component';
+import {By} from '@angular/platform-browser';
+import {MatFormFieldModule, MatInputModule} from '@angular/material';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
+  let fixture: ComponentFixture<AppComponent>;
+  let component: AppComponent;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
-      ],
+        RouterTestingModule,
+      MatFormFieldModule, MatInputModule, NoopAnimationsModule],
+
       declarations: [
-        AppComponent
+        AppComponent,
+        DamageButtonGroupComponent
       ],
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'sentinels-villain-damage-tracker'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('sentinels-villain-damage-tracker');
-  });
-
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to sentinels-villain-damage-tracker!');
+  });
+
+  it('should add up damage totals from damage button groups', function () {
+    const damageButtons: DamageButtonGroupComponent[] = fixture.debugElement.queryAll(By.directive(DamageButtonGroupComponent))
+      .map(debugEl => debugEl.componentInstance);
+    damageButtons.forEach(btn => {
+      btn.damageTotal = 2;
+    });
+
+    expect(component.getCurrentDamage()).toEqual(24);
   });
 });

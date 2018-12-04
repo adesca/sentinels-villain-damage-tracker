@@ -1,0 +1,9 @@
+<mat-form-field>
+
+  <input matInput [value]="damageTotal" [readonly]="true">
+</mat-form-field>
+<div>
+  <button mat-raised-button (click)="updateDamageTotal(-1)">-1</button>
+  {{damageType}}
+  <button mat-raised-button (click)="updateDamageTotal(1)">+1</button>
+</div>

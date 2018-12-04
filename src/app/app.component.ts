@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, QueryList, ViewChildren} from '@angular/core';
+import {DamageButtonGroupComponent} from 'src/app/damage-button-group/damage-button-group.component';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'sentinels-villain-damage-tracker';
+
+  @ViewChildren(DamageButtonGroupComponent) damageButtons: QueryList<DamageButtonGroupComponent>;
+
+  damageTypes = ['GLOBAL', 'COLD', 'ENERGY', 'FIRE', 'INFERNAL',
+    'LIGHTNING', 'MELEE', 'PROJfECTILE', 'PSYCHIC', 'RADIANT', 'SONIC', 'TOXIC'];
+
+  getCurrentDamage() {
+    return this.damageButtons.reduce(((prevValue: number, curValue: DamageButtonGroupComponent) => {
+      return prevValue + curValue.damageTotal;
+    }), 0);
+  }
 }
